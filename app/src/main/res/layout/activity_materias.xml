@@ -19,6 +19,15 @@
         android:hint="Docente"
         android:inputType="textPersonName" />
 
+    <EditText
+        android:id="@+id/etBuscarMateria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Buscar materia por nombre"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:layout_margin="8dp" />
+
     <Button
         android:id="@+id/btnGuardar"
         android:layout_width="match_parent"
