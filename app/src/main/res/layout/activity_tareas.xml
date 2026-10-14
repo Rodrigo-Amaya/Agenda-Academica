@@ -32,6 +32,15 @@
         android:layout_height="wrap_content"
         android:hint="Fecha de entrega (AAAA-MM-DD)"
         android:inputType="date" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prioridad de la tarea" />
+
+    <Spinner
+        android:id="@+id/spPrioridadTarea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnGuardarTarea"
