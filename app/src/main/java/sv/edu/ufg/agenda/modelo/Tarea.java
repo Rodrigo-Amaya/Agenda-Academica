@@ -6,15 +6,17 @@ public class Tarea implements Entidad{
     private String titulo;
     private String fechaEntrega;   // texto con formato aaaa-mm-dd
     private boolean completada;
+    private String prioridad;
 
     public Tarea() { }
 
-    public Tarea(int id, int materiaId, String titulo, String fechaEntrega) {
+    public Tarea(int id, int materiaId, String titulo, String fechaEntrega, String prioridad) {
         this.id = id;
         this.materiaId = materiaId;
         this.titulo = titulo;
         this.fechaEntrega = fechaEntrega;
         this.completada = false;
+        this.prioridad = prioridad;
     }
 
     @Override public int getId() { return id; }
@@ -28,4 +30,7 @@ public class Tarea implements Entidad{
     public boolean isCompletada() { return completada; }
     public void setCompletada(boolean completada) { this.completada = completada; }
 
+    //Se agrega prioridad
+    public String getPrioridad(){return prioridad;}
+    public void setPrioridad(String prioridad){this.prioridad = prioridad;}
 }

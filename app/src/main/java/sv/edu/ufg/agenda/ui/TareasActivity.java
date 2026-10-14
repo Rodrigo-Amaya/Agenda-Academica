@@ -30,6 +30,10 @@ import sv.edu.ufg.agenda.dao.TareaDAO;
 import sv.edu.ufg.agenda.modelo.Materia;
 import sv.edu.ufg.agenda.modelo.Tarea;
 
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+
+
 public class TareasActivity extends AppCompatActivity  {
 
     private MateriaDAO materiaDAO;
@@ -44,6 +48,8 @@ public class TareasActivity extends AppCompatActivity  {
 
     private TareaAdapter adapter;
     private Tarea enEdicion;
+
+    private Spinner spPrioridadTarea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,22 @@ public class TareasActivity extends AppCompatActivity  {
         etTituloTarea = findViewById(R.id.etTituloTarea);
         etFechaEntrega = findViewById(R.id.etFechaEntrega);
         btnGuardarTarea = findViewById(R.id.btnGuardarTarea);
+        //Selector de prioridad
+        spPrioridadTarea = findViewById(R.id.spPrioridadTarea);
+
+        String[] prioridades = {"Alta", "Media", "Baja"};
+
+        ArrayAdapter<String> prioridadAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                prioridades
+        );
+
+        prioridadAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item
+        );
+
+        spPrioridadTarea.setAdapter(prioridadAdapter);
 
         tvNombreMateria.setText("Tareas de: " + materia.getNombre());
 
@@ -126,12 +148,16 @@ public class TareasActivity extends AppCompatActivity  {
             return;
         }
 
+        String prioridad = spPrioridadTarea.getSelectedItem().toString();
+
         if (enEdicion == null) {
             tareaDAO.insertar(
-                    new Tarea(0, materiaId, titulo, fecha));
+                    new Tarea(0, materiaId, titulo, fecha, prioridad));
         } else {
             enEdicion.setTitulo(titulo);
             enEdicion.setFechaEntrega(fecha);
+            enEdicion.setPrioridad(prioridad);
+
             tareaDAO.actualizar(enEdicion);
         }
 
@@ -146,6 +172,21 @@ public class TareasActivity extends AppCompatActivity  {
         etTituloTarea.setText(tarea.getTitulo());
         etFechaEntrega.setText(tarea.getFechaEntrega());
 
+        String prioridad = tarea.getPrioridad();
+        if (prioridad == null) {
+            prioridad = "Media";
+        }
+
+        int posicion = 1; // Media por defecto
+
+        if (prioridad.equals("Alta")) {
+            posicion = 0;
+        } else if (prioridad.equals("Baja")) {
+            posicion = 2;
+        }
+
+        spPrioridadTarea.setSelection(posicion);
+
         btnGuardarTarea.setText("Actualizar tarea");
     }
 
@@ -157,6 +198,8 @@ public class TareasActivity extends AppCompatActivity  {
 
         etTituloTarea.setError(null);
         etFechaEntrega.setError(null);
+
+        spPrioridadTarea.setSelection(1);
 
         btnGuardarTarea.setText("Agregar tarea");
     }
@@ -253,6 +296,14 @@ public class TareasActivity extends AppCompatActivity  {
             fila.tvTitulo.setText(tarea.getTitulo());
             fila.tvFecha.setText("Entrega: " + tarea.getFechaEntrega());
 
+            String prioridad = tarea.getPrioridad();
+
+            if (prioridad == null || prioridad.isEmpty()) {
+                prioridad = "Media";
+            }
+
+            fila.tvPrioridad.setText("Prioridad: " + prioridad);
+
             // Evitar que una fila reciclada active el listener anterior.
             fila.cbCompletada.setOnCheckedChangeListener(null);
             fila.cbCompletada.setChecked(tarea.isCompletada());
@@ -274,6 +325,7 @@ public class TareasActivity extends AppCompatActivity  {
 
             final TextView tvTitulo;
             final TextView tvFecha;
+            final TextView tvPrioridad;
             final CheckBox cbCompletada;
             final Button btnEditar;
             final Button btnEliminar;
@@ -283,6 +335,7 @@ public class TareasActivity extends AppCompatActivity  {
 
                 tvTitulo = vista.findViewById(R.id.tvTituloTarea);
                 tvFecha = vista.findViewById(R.id.tvFechaTarea);
+                tvPrioridad = vista.findViewById(R.id.tvPrioridadTarea);
                 cbCompletada = vista.findViewById(R.id.cbCompletada);
                 btnEditar = vista.findViewById(R.id.btnEditarTarea);
                 btnEliminar = vista.findViewById(R.id.btnEliminarTarea);
