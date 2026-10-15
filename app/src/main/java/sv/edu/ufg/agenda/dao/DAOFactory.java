@@ -2,6 +2,7 @@ package sv.edu.ufg.agenda.dao;
 import java.io.File;
 
 public class DAOFactory {
+    private static final boolean USAR_MEMORIA = true;
     private final MateriaDAO materiaDAO;
     private final TareaDAO tareaDAO;
 

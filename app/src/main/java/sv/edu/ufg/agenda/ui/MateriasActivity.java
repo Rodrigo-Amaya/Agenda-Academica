@@ -1,7 +1,12 @@
 package sv.edu.ufg.agenda.ui;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,6 +28,7 @@ public class MateriasActivity extends AppCompatActivity implements MateriaAdapte
     private MateriaAdapter adapter;
     private EditText etNombre;
     private EditText etDocente;
+    private EditText etBuscar;
     private Button btnGuardar;
     private Materia enEdicion;   // null = se está agregando una materia nueva
 
@@ -37,6 +43,7 @@ public class MateriasActivity extends AppCompatActivity implements MateriaAdapte
 
         etNombre = findViewById(R.id.etNombre);
         etDocente = findViewById(R.id.etDocente);
+        etBuscar = findViewById(R.id.etBuscarMateria);
         btnGuardar = findViewById(R.id.btnGuardar);
 
         adapter = new MateriaAdapter(this);
@@ -45,9 +52,24 @@ public class MateriasActivity extends AppCompatActivity implements MateriaAdapte
         lista.setAdapter(adapter);
 
         btnGuardar.setOnClickListener(v -> guardar());
+        etBuscar.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filtrar(s.toString());
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
         refrescar();
     }
 
+    private void filtrar(String texto) {
+        if (texto == null || texto.trim().isEmpty()) {
+            mostrarConPendientes(materiaDAO.listar());
+        } else {
+            mostrarConPendientes(materiaDAO.buscarPorNombre(texto.trim()));
+        }
+
+    }
     private void guardar() {
         String nombre = etNombre.getText().toString().trim();
         String docente = etDocente.getText().toString().trim();
@@ -74,7 +96,7 @@ public class MateriasActivity extends AppCompatActivity implements MateriaAdapte
     }
 
     private void refrescar() {
-        adapter.mostrar(materiaDAO.listar());
+        mostrarConPendientes(materiaDAO.listar());
     }
 
     @Override
@@ -104,5 +126,13 @@ public class MateriasActivity extends AppCompatActivity implements MateriaAdapte
             limpiarFormulario();
         }
         refrescar();
+    }
+    private void mostrarConPendientes(List<Materia> materias) {
+        Map<Integer, Integer> pendientes = new HashMap<>();
+        for (Materia m : materias) {
+            pendientes.put(m.getId(), tareaDAO.contarPendientesPorMateria(m.getId()));
+        }
+        adapter.mostrar(materias, pendientes);
+
     }
 }

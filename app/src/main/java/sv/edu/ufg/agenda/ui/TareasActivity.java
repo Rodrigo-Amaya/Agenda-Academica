@@ -254,6 +254,14 @@ public class TareasActivity extends AppCompatActivity  {
                 && posicion.getIndex() == texto.length();
     }
 
+    private void filtrar(String texto) {
+        if (texto == null || texto.trim().isEmpty()) {
+            adapter.mostrar(tareaDAO.listarPorMateria(materiaId));
+        } else {
+            adapter.mostrar(tareaDAO.buscarPorTitulo(texto.trim()));
+        }
+    }
+
     // Contrato de acciones entre la lista y la pantalla.
     private interface AccionesTarea {
         void editar(Tarea tarea);
@@ -341,5 +349,6 @@ public class TareasActivity extends AppCompatActivity  {
                 btnEliminar = vista.findViewById(R.id.btnEliminarTarea);
             }
         }
+
     }
 }

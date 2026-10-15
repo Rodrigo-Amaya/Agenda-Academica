@@ -5,4 +5,6 @@ import sv.edu.ufg.agenda.modelo.Tarea;
 
 public interface TareaDAO extends DAO<Tarea>{
     List<Tarea> listarPorMateria(int materiaId);
+    List<Tarea> buscarPorTitulo(String texto);
+    int contarPendientesPorMateria(int materiaId);
 }
