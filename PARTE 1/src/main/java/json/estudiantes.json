@@ -1,0 +1,20 @@
+[
+  {
+    "id": 2,
+    "nombre": "Luis Pérez",
+    "carrera": "Ingeniería Industrial",
+    "correo": "luisPerez1@hotmail.com"
+  },
+  {
+    "id": 4,
+    "nombre": "Federico Nuñez",
+    "carrera": "Ingenieria en Sistemas",
+    "correo": "fede123@gmail.com"
+  },
+  {
+    "id": 5,
+    "nombre": "Natan",
+    "carrera": "Biologia Marina",
+    "correo": "natanElBiologo@gmail.com"
+  }
+]
