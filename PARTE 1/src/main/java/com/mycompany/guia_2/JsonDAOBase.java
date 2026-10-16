@@ -1,4 +1,4 @@
-package com.ufg.dao.dao;
+package com.mycompany.guia_2;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
