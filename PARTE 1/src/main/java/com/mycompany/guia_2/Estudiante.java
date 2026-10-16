@@ -13,6 +13,8 @@ public class Estudiante {
         this.carrera = carrera;
         this.correo = correo;
     }
+    
+    public Estudiante(){}
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
